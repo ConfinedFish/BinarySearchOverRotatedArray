@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.Random;
 
+@SuppressWarnings("ALL")
 public class Lab1 {
 	
 	/**
@@ -26,8 +27,24 @@ public class Lab1 {
 	 * Problem 2: Finds the smallest missing number in a sorted array in O(log n) time.
 	 */
 	private static int problem2(int[] arr) {
-		// Implement me!
-		return 0;
+		if (arr[0] != 0)
+			return 0;
+		int start = 0;
+		int end = arr.length - 1;
+		while (start < end) {
+			int mid = (start + end) / 2;
+			if ((arr[mid] - arr[start]) != (mid - start)) {
+				if ((mid - start) == 1 && (arr[mid] - arr[start] > 1))
+					return (mid);
+				end = mid;
+			} else if ((arr[end] - arr[mid]) != (end - mid)) {
+				if ((end - mid) == 1 && (arr[end] - arr[mid] > 1))
+					return (mid + 1);
+				start = mid;
+			} else
+				return arr.length;
+		}
+		return arr.length;
 	}
 	
 	// ---------------------------------------------------------------------
@@ -36,16 +53,18 @@ public class Lab1 {
 	private static final int LabNo = 1;
 	private static final String quarter = "Winter 2019";
 	
-	private static final Random rng = new Random(654321);
+	private static final Random rng = new Random(866298);
 	
 	public static void main(String args[]) {
 		System.out.println("CS 302 -- " + quarter + " -- Lab " + LabNo);
 		
 		testProblems(1);
-//        testProblems(2);
+		testProblems(2);
 	}
 	
 	private static void testProblems(int prob) {
+		int result = 0;
+		int solution = 0;
 		int noOfLines = 1000000;
 		
 		System.out.println("-- -- -- -- --");
@@ -71,9 +90,7 @@ public class Lab1 {
 				}
 				
 				int[] arr = line[0];
-				int solution = line[1][0];
-				
-				int result = 0;
+				solution = line[1][0];
 				
 				switch (prob) {
 					case 1:
@@ -92,7 +109,7 @@ public class Lab1 {
 			}
 			
 			if (!passed) {
-				System.out.println("Test " + i + " failed!" + (exce ? " (Exception)" : ""));
+				System.out.println("Test " + i + " failed! " + solution + " expected but got " + result + (exce ? " (Exception)" : ""));
 				passedAll = false;
 			}
 		}
